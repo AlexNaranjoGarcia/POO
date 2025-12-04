@@ -1,4 +1,5 @@
 import tkinter as tk
+from controller import controlador
 class Vista:
     def __init__(self, window):
         window.geometry("800x800")
@@ -111,7 +112,7 @@ class Vista:
         lbl_plazas = tk.Label(window, text="Plazas:").pack(pady=8)
         txt_plazas = tk.Entry(window, textvariable=plazas).pack(pady=4)
         
-        btn_guardar = tk.Button(window, text="Guardar", command=lambda:"")
+        btn_guardar = tk.Button(window, text="Guardar", command=lambda:controlador.Funciones.insertar_autos(marca.get(), color.get(), modelo.get(), velocidad.get(), caballaje.get(), plazas.get()))
         btn_guardar.pack(pady=20)
 
         btn_volver = tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo))
@@ -123,7 +124,7 @@ class Vista:
         lbl_titulo = tk.Label(window, text=f"Registros de Autos")
         lbl_titulo.pack(pady=10)
         
-        registros = [(1, "BMW", "Rojo", "2020", "150", "200", "4")]
+        registros = controlador.Funciones.consultar_autos()
         
         texto_notas = ""
         for i, fila in enumerate(registros, 1):
@@ -148,15 +149,15 @@ class Vista:
         txt_id.pack(pady=5)
         
         if tipo == "cambiar":
-            tk.Button(window, text="Buscar", command=lambda:Vista.cambiar_auto(window, id.get())).pack()
+            tk.Button(window, text="Buscar", command=lambda:controlador.Funciones.get_id_auto(window, id.get(), "cambiar")).pack()
         elif tipo =="borrar":
-            tk.Button(window, text="Buscar", command=lambda:Vista.eliminar_auto(window, id.get())).pack()
+            tk.Button(window, text="Buscar", command=lambda:controlador.Funciones.get_id_auto(window, id.get(), "borrar")).pack()
         
         btn_volver = tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo))
         btn_volver.pack(pady=20)
         
     @staticmethod
-    def cambiar_auto(window, id_consultado):
+    def cambiar_auto(window, registro):
         Vista.borrar_pantalla(window)
         #Variables
         id = tk.IntVar()
@@ -169,45 +170,51 @@ class Vista:
         
         tk.Label(window, text=f"Actualizar Auto", font=("Arial", 14)).pack(pady=10)
         txt_id = tk.Entry(window, textvariable=id, justify="right", state="readonly")
-        id.set(id_consultado)
+        id.set(registro[0])
         txt_id.pack(pady=5)
         
         lbl_marca = tk.Label(window, text="Marca:").pack(pady=8)
         txt_marca = tk.Entry(window, textvariable=marca)
         txt_marca.focus()
+        marca.set(registro[1])
         txt_marca.pack(pady=4)
         
         lbl_color = tk.Label(window, text="Color:").pack(pady=8)
         txt_color = tk.Entry(window, textvariable=color).pack(pady=4)
+        color.set(registro[2])
         
         lbl_modelo = tk.Label(window, text="Modelo:").pack(pady=8)
         txt_modelo = tk.Entry(window, textvariable=modelo).pack(pady=4)
+        modelo.set(registro[3])
         
         lbl_velocidad = tk.Label(window, text="Velocidad:").pack(pady=8)
         txt_velocidad = tk.Entry(window, textvariable=velocidad).pack(pady=4)
+        velocidad.set(registro[4])
         
         lbl_caballaje = tk.Label(window, text="Caballaje:").pack(pady=8)
         txt_caballaje = tk.Entry(window, textvariable=caballaje).pack(pady=4)
+        caballaje.set(registro[5])
         
         lbl_plazas = tk.Label(window, text="Plazas:").pack(pady=8)
         txt_plazas = tk.Entry(window, textvariable=plazas).pack(pady=4)
+        plazas.set(registro[6])
         
-        tk.Button(window, text="Guardar", command=lambda:"").pack(pady=20)
+        tk.Button(window, text="Guardar", command=lambda:controlador.Funciones.cambiar_auto(marca.get(), color.get(), modelo.get(), velocidad.get(), caballaje.get(), plazas.get(), id.get())).pack(pady=20)
         tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo)).pack(pady=5)
     
     @staticmethod
-    def eliminar_auto(window, id_consultado):
+    def eliminar_auto(window, registro):
         Vista.borrar_pantalla(window)
         #Variables
         id = tk.IntVar()
         
         tk.Label(window, text=f"Eliminar Auto", font=("Arial", 14)).pack(pady=10)
         txt_id = tk.Entry(window, textvariable=id, justify="right", state="readonly")
-        id.set(id_consultado)
+        id.set(registro[0])
         txt_id.pack(pady=5)
         
         
-        tk.Button(window, text="Eliminar", command=lambda:"").pack(pady=20)
+        tk.Button(window, text="Eliminar", command=lambda:controlador.Funciones.eliminar_auto(id.get())).pack(pady=20)
         tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo)).pack(pady=5)
     
     @staticmethod
