@@ -11,7 +11,23 @@ Productos Entregables:
     *Modulo principal "main"
     *Interaccion con las interfaces
 **Nombre del commit: "commit_01_12_25"
+
+2 Diciembre
+    1)Interfaces:
+        1.1 insertar_camionetas()
+        1.2 consultar_camionetas()
+        1.3 cambiar_camionetas()
+        1.4 borrar_camionetas()
+        2.1 insertar_camiones()
+        2.2 consultar_camiones()
+        2.3 cambiar_camiones()
+        2.4 borrar_camiones()
+    
+    Productos Entregables:
+    **Interaccion con todas las interfaces
+    **Nombre del Commit: "commit_02_12_25"
 '''
+
 import tkinter as tk
 from view import vista
 
