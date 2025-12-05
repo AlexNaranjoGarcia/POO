@@ -74,3 +74,36 @@ class Funciones:
     def eliminar_camionetas(id):
         respuesta = camionetas.Camionetas.eliminar(id)
         Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def insertar_camiones(marca, color, modelo, velocidad, caballaje, plazas, eje, capacidad):
+        respuesta = camiones.Camion.insertar(marca, color, modelo, velocidad, caballaje, plazas, eje, capacidad)
+        Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def get_id_camion(window, id, tipo):
+        registro = camiones.Camion.consultar_id(id)
+        if registro == None:
+            messagebox.showerror(title="Error", message="No existe ese ID")
+            return
+        if tipo == "cambiar":
+            vista.Vista.cambiar_camiones(window, registro)
+        if tipo == "borrar":
+            vista.Vista.eliminar_camiones(window, registro)
+    
+    @staticmethod
+    def consultar_camiones():
+        registros = camiones.Camion.consultar()
+        if len(registros)==0:
+            messagebox.showerror(title="Error", message="No hay registros de Camiones")
+        return registros
+    
+    @staticmethod
+    def cambiar_camion(marca, color, modelo, velocidad, caballaje, plazas, eje, capacidad, id):
+        respuesta = camiones.Camion.actualizar(marca, color, modelo, velocidad, caballaje, plazas, eje, capacidad, id)
+        Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def eliminar_camion(id):
+        respuesta = camiones.Camion.eliminar(id)
+        Funciones.respuesta_sql(respuesta)
