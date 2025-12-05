@@ -230,7 +230,10 @@ class Vista:
         caballaje = tk.StringVar()
         plazas = tk.StringVar()
         traccion = tk.StringVar()
-        cerrada = tk.StringVar()
+        
+        # Usamos BooleanVar para los radiobuttons
+        cerrada = tk.BooleanVar() 
+        cerrada.set(False) # Valor por defecto
         
         lbl_marca = tk.Label(window, text="Marca:").pack(pady=8)
         txt_marca = tk.Entry(window, textvariable=marca).pack(pady=4)
@@ -253,10 +256,20 @@ class Vista:
         lbl_traccion = tk.Label(window, text="Traccion:").pack(pady=8)
         txt_traccion = tk.Entry(window, textvariable=traccion).pack(pady=4)
         
-        lbl_cerrada = tk.Label(window, text="Cerrada:").pack(pady=8)
-        txt_cerrada = tk.Entry(window, textvariable=cerrada).pack(pady=4)
+        # --- SECCION MODIFICADA (Radiobuttons) ---
+        lbl_cerrada = tk.Label(window, text="¿Es cerrada?").pack(pady=8)
         
-        btn_guardar = tk.Button(window, text="Guardar", command=lambda:"")
+        frame_radio = tk.Frame(window) # Frame para alinear los botones
+        frame_radio.pack(pady=4)
+        
+        rb_si = tk.Radiobutton(frame_radio, text="Sí", variable=cerrada, value=True)
+        rb_si.pack(side=tk.LEFT, padx=10)
+        
+        rb_no = tk.Radiobutton(frame_radio, text="No", variable=cerrada, value=False)
+        rb_no.pack(side=tk.LEFT, padx=10)
+        # -----------------------------------------
+        
+        btn_guardar = tk.Button(window, text="Guardar", command=lambda:controlador.Funciones.insertar_camionetas(marca.get(), color.get(), modelo.get(), velocidad.get(), caballaje.get(), plazas.get(), traccion.get(), cerrada.get()))
         btn_guardar.pack(pady=20)
         
         btn_volver = tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo))
@@ -268,11 +281,11 @@ class Vista:
         lbl_titulo = tk.Label(window, text=f"Registros de Camionetas")
         lbl_titulo.pack(pady=10)
         
-        registros = [(1, "BMW", "Rojo", "2020", "150", "200", "4", "Trasera", "1")]
+        registros = controlador.Funciones.consultar_camionetas()
         
         texto_notas = ""
         for i, fila in enumerate(registros, 1):
-            if fila[8] == "1":
+            if fila[8] == True:
                 cerrada = True
             else:
                 cerrada = False
@@ -297,15 +310,15 @@ class Vista:
         txt_id.pack(pady=5)
         
         if tipo == "cambiar":
-            tk.Button(window, text="Buscar", command=lambda:Vista.cambiar_camionetas(window, id.get())).pack()
+            tk.Button(window, text="Buscar", command=lambda:controlador.Funciones.get_id_camioneta(window, id.get(), "cambiar")).pack()
         elif tipo =="borrar":
-            tk.Button(window, text="Buscar", command=lambda:Vista.eliminar_camionetas(window, id.get())).pack()
+            tk.Button(window, text="Buscar", command=lambda:controlador.Funciones.get_id_camioneta(window, id.get(), "borrar")).pack()
         
         btn_volver = tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo))
         btn_volver.pack(pady=20)
     
     @staticmethod
-    def cambiar_camionetas(window, id_consultado):
+    def cambiar_camionetas(window, registro):
         Vista.borrar_pantalla(window)
         #Variables
         id = tk.IntVar()
@@ -316,55 +329,77 @@ class Vista:
         caballaje = tk.StringVar()
         plazas = tk.StringVar()
         traccion = tk.StringVar()
-        cerrada = tk.StringVar()
+        
+        # Usamos BooleanVar
+        cerrada = tk.BooleanVar()
         
         tk.Label(window, text=f"Actualizar Camionetas", font=("Arial", 14)).pack(pady=10)
         txt_id = tk.Entry(window, textvariable=id, justify="right", state="readonly")
-        id.set(id_consultado)
+        # print(registro) # Debug opcional
+        id.set(registro[0])
         txt_id.pack(pady=5)
         
         lbl_marca = tk.Label(window, text="Marca:").pack(pady=8)
         txt_marca = tk.Entry(window, textvariable=marca)
         txt_marca.focus()
+        marca.set(registro[1])
         txt_marca.pack(pady=4)
         
         lbl_color = tk.Label(window, text="Color:").pack(pady=8)
         txt_color = tk.Entry(window, textvariable=color).pack(pady=4)
+        color.set(registro[2])
         
         lbl_modelo = tk.Label(window, text="Modelo:").pack(pady=8)
         txt_modelo = tk.Entry(window, textvariable=modelo).pack(pady=4)
+        modelo.set(registro[3])
         
         lbl_velocidad = tk.Label(window, text="Velocidad:").pack(pady=8)
         txt_velocidad = tk.Entry(window, textvariable=velocidad).pack(pady=4)
+        velocidad.set(registro[4])
         
         lbl_caballaje = tk.Label(window, text="Caballaje:").pack(pady=8)
         txt_caballaje = tk.Entry(window, textvariable=caballaje).pack(pady=4)
+        caballaje.set(registro[5])
         
         lbl_plazas = tk.Label(window, text="Plazas:").pack(pady=8)
         txt_plazas = tk.Entry(window, textvariable=plazas).pack(pady=4)
+        plazas.set(registro[6])
         
         lbl_traccion = tk.Label(window, text="Traccion:").pack(pady=8)
         txt_traccion = tk.Entry(window, textvariable=traccion).pack(pady=4)
+        traccion.set(registro[7])
         
-        lbl_cerrada = tk.Label(window, text="Cerrada:").pack(pady=8)
-        txt_cerrada = tk.Entry(window, textvariable=cerrada).pack(pady=4)
+        # --- SECCION MODIFICADA (Radiobuttons) ---
+        lbl_cerrada = tk.Label(window, text="¿Es cerrada?").pack(pady=8)
         
-        tk.Button(window, text="Guardar", command=lambda:"").pack(pady=20)
+        # Establecer el valor actual traido del registro (debe ser True/False o 1/0)
+        cerrada.set(registro[8])
+        
+        frame_radio = tk.Frame(window)
+        frame_radio.pack(pady=4)
+        
+        rb_si = tk.Radiobutton(frame_radio, text="Sí", variable=cerrada, value=True)
+        rb_si.pack(side=tk.LEFT, padx=10)
+        
+        rb_no = tk.Radiobutton(frame_radio, text="No", variable=cerrada, value=False)
+        rb_no.pack(side=tk.LEFT, padx=10)
+        # -----------------------------------------
+
+        tk.Button(window, text="Guardar", command=lambda:controlador.Funciones.cambiar_camioneta(marca.get(), color.get(), modelo.get(), velocidad.get(), caballaje.get(), plazas.get(), traccion.get(), cerrada.get(), id.get())).pack(pady=20)
         tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo)).pack(pady=5)
     
     @staticmethod
-    def eliminar_camionetas(window, id_consultado):
+    def eliminar_camionetas(window, registro):
         Vista.borrar_pantalla(window)
         #Variables
         id = tk.IntVar()
         
         tk.Label(window, text=f"Eliminar Camionetas", font=("Arial", 14)).pack(pady=10)
         txt_id = tk.Entry(window, textvariable=id, justify="right", state="readonly")
-        id.set(id_consultado)
+        id.set(registro[0])
         txt_id.pack(pady=5)
         
-        
-        tk.Button(window, text="Eliminar", command=lambda:"").pack(pady=20)
+        tk.Button(window, text="Eliminar", command=lambda:controlador.Funciones.eliminar_camionetas(id.get())).pack(pady=20)
         tk.Button(window, text="Volver", command=lambda:Vista.menu_acciones(window, global_tipo)).pack(pady=5)
     
     @staticmethod

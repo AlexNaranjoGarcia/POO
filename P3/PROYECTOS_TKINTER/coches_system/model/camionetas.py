@@ -17,11 +17,19 @@ class Camionetas:
             return cursor.fetchall()
         except:
             return []
+    
+    @staticmethod
+    def consultar_id(id):
+        try:
+            cursor.execute("Select * from camionetas where id = %s", (id,))
+            return cursor.fetchone()
+        except:
+            return []
         
     @staticmethod
     def actualizar(marca, color, modelo, velocidad, caballaje, plazas, traccion, cerrada, id):
         try:
-            cursor.execute("Update camionetas set marca = %s, color= %s, modelo = %s, velocidad = %s, caballaje = %s, plazas = %s, traccion = %s, cerrada = %s where id_camioneta =%s",(marca, color, modelo, velocidad, caballaje, plazas, traccion,cerrada, id))
+            cursor.execute("Update camionetas set marca = %s, color= %s, modelo = %s, velocidad = %s, caballaje = %s, plazas = %s, traccion = %s, cerrada = %s where id =%s",(marca, color, modelo, velocidad, caballaje, plazas, traccion,cerrada, id))
             conexion.commit()
             return True
         except:
@@ -30,7 +38,7 @@ class Camionetas:
     @staticmethod
     def eliminar(id):
         try:
-            cursor.execute("delete from camionetas where id_camioneta =%s",(id,))
+            cursor.execute("delete from camionetas where id =%s",(id,))
             conexion.commit()
             return True
         except:

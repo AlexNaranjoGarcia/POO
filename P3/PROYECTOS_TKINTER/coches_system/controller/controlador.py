@@ -17,7 +17,7 @@ class Funciones:
     @staticmethod
     def get_id_auto(window, id, tipo):
         registro = coches.Autos.consultar_id(id)
-        if len(registro)==0:
+        if registro == None:
             messagebox.showerror(title="Error", message="No existe ese ID")
             return
         if tipo == "cambiar":
@@ -40,4 +40,37 @@ class Funciones:
     @staticmethod
     def eliminar_auto(id):
         respuesta = coches.Autos.eliminar(id)
+        Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def insertar_camionetas(marca, color, modelo, velocidad, caballaje, plazas, traccion, cerrada):
+        respuesta = camionetas.Camionetas.insertar(marca, color, modelo, velocidad, caballaje, plazas, traccion, cerrada)
+        Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def get_id_camioneta(window, id, tipo):
+        registro = camionetas.Camionetas.consultar_id(id)
+        if registro == None:
+            messagebox.showerror(title="Error", message="No existe ese ID")
+            return
+        if tipo == "cambiar":
+            vista.Vista.cambiar_camionetas(window, registro)
+        if tipo == "borrar":
+            vista.Vista.eliminar_camionetas(window, registro)
+    
+    @staticmethod
+    def consultar_camionetas():
+        registros = camionetas.Camionetas.consultar()
+        if len(registros)==0:
+            messagebox.showerror(title="Error", message="No hay registros de Camionetas")
+        return registros
+    
+    @staticmethod
+    def cambiar_camioneta(marca, color, modelo, velocidad, caballaje, plazas, traccion, cerrada,id):
+        respuesta = camionetas.Camionetas.actualizar(marca, color, modelo, velocidad, caballaje, plazas, traccion, cerrada, id)
+        Funciones.respuesta_sql(respuesta)
+    
+    @staticmethod
+    def eliminar_camionetas(id):
+        respuesta = camionetas.Camionetas.eliminar(id)
         Funciones.respuesta_sql(respuesta)

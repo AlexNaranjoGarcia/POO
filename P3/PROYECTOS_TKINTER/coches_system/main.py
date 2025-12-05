@@ -39,6 +39,16 @@ Productos Entregables:
     Productos Entregables:
     **Interaccion con la funcionalidad (controlador) de las interfaces anteriores
     ** Nombre del Commit: "commit_03_12_25"
+
+4 Diciembre
+    1) Controlador:
+        1.1 insertar_camionetas()
+        1.2 consultar_camionetas()
+        1.3 cambiar_camionetas()
+        1.4 borrar_camionetas
+    Productos Entregables:
+    **Interaccion con la funcionalidad (controlador) de las interfaces anteriores
+    ** Nombre del Commit: "commit_04_12_25"
 '''
 
 import tkinter as tk
